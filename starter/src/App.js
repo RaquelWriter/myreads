@@ -4,7 +4,6 @@ import { useState, useEffect } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import Shelfs from './Shelfs';
 import Search from './Search';
-import AddBook from './AddBook';
 
 function App() {
   const [books, setBooks] = useState([]);
@@ -52,14 +51,24 @@ function App() {
       'bookShelf inside UPDATE: ',
       bookShelf
     );
-    const myBook = books.find(item => item.id === bookID);
+    const myBook = books.find((item) => item.id === bookID);
     console.log(myBook);
     const res = await BooksAPI.update(myBook, bookShelf);
     setBooksInShelfs(res);
     console.log(res);
-  } 
-/*   shelfBooks.map(shelfBook => shelfBook.id === book.id ?
-    {...shelfBook, shelf: newShelf} : shelfBook); */
+  };
+
+  const [booksToShow, setBooksToShow] = useState ([]);
+
+  const searchBook = async (query, maxResults) => {
+    const res = await BooksAPI.search(query, maxResults);
+    console.log("RESULTADO DE SEARCH: ", res);
+    return setBooksToShow(res);
+  };
+
+/*   contacts.filter((c) =>
+  c.name.toLowerCase().includes(query.toLowerCase())
+); */
 
   return (
     <Routes>
@@ -74,8 +83,10 @@ function App() {
           />
         }
       />
-      <Route path='/search' element={<Search />} />
-      <Route path='/addbook' element={<AddBook />} />
+      <Route
+        path='/search'
+        element={<Search booksToShow={booksToShow} searchBook={searchBook} />}
+      />
     </Routes>
   );
 }

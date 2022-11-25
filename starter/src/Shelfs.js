@@ -4,14 +4,12 @@ import BookShelfChanger from './BookShelfChanger';
 function Shelfs({ books, booksInShelfs, onBookStateChange }) {
 
   return (
-    <div className='list-books'>
-      <div className='list-books-title'>
-        <h1>MyReads</h1>
-      </div>
+    <>
       <div className='list-books-content'>
         <div>
           {Object.keys(booksInShelfs).map((item, key) => (
             <div className='bookshelf' key={key}>
+              {console.log("ITEM: !!!", item)}
               <h2 className='bookshelf-title'>{item}</h2>
               <div className='bookshelf-books'>
                 <ol className='books-grid'>
@@ -52,9 +50,9 @@ function Shelfs({ books, booksInShelfs, onBookStateChange }) {
         </div>
       </div>
       <div className='open-search'>
-        <Link to='/addbook'>Add a book</Link>
+        <Link to='/search'>Search</Link>
       </div>
-    </div>
+    </>
   );
 }
 export default Shelfs;
