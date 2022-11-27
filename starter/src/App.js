@@ -42,18 +42,25 @@ function App() {
   }, [books]);
 
   // UPDATE THE SHELF WITH USER SELECTION
-  const onBookStateChange = async (bookID, bookShelf) => {
+  const onBookStateChange = async (bookID, bookShelf, completeBook) => {
     console.log(
       'bookID inside UPDATE: ',
       bookID,
       'bookShelf inside UPDATE: ',
-      bookShelf
+      bookShelf,
+      'completebook inside UPDATE: ',
+      completeBook
     );
     const myBook = books.find((item) => item.id === bookID);
-    console.log(myBook);
-    const res = await BooksAPI.update(myBook, bookShelf);
-    setBooksInShelfs(res);
-    console.log(res);
+    if (myBook) {
+      const res = await BooksAPI.update(myBook, bookShelf);
+      setBooksInShelfs(res);
+      console.log(res);
+    } else {
+      completeBook.shelf = bookShelf;
+      setBooks([...books, completeBook]);
+      setBooksInShelfs([books]);
+    }
   };
 
   const [booksToShow, setBooksToShow] = useState([]);
@@ -84,15 +91,17 @@ function App() {
           resBook.id ? getShelf(res) : setBooksToShow({ ...res, shelf: 'none' })
         )
     ); */
-    
-      Object.keys(res).map(
-        (bookFromSearch) =>
-          bookFromSearch.id ===
-          Object.values(booksInShelfs).map((bookFromShelf) =>
-            bookFromShelf.id ? getShelf(res) : res[bookFromSearch].shelf = 'none'
-          )
-      )
-      setBooksToShow(res);
+
+    Object.keys(res).map(
+      (bookFromSearch) =>
+        bookFromSearch.id ===
+        Object.values(booksInShelfs).map((bookFromShelf) =>
+          bookFromShelf.id
+            ? getShelf(res)
+            : (res[bookFromSearch].shelf = 'none')
+        )
+    );
+    setBooksToShow(res);
   };
 
   /* 
@@ -163,6 +172,7 @@ function App() {
         path='/search'
         element={
           <Search
+            books={books}
             booksToShow={booksToShow}
             searchBook={searchBook}
             booksInShelfs={booksInShelfs}

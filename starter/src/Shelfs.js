@@ -24,7 +24,7 @@ function Shelfs({ books, booksInShelfs, onBookStateChange }) {
                               height: 193,
                               backgroundImage: `url(${
                                 books.find((item) => item.id === bookID)
-                                  .imageLinks.smallThumbnail
+                                  .imageLinks?.smallThumbnail ? books.find((item) => item.id === bookID).imageLinks.smallThumbnail : null
                               })`,
                             }}
                           ></div>
@@ -38,7 +38,11 @@ function Shelfs({ books, booksInShelfs, onBookStateChange }) {
                           {books.find((item) => item.id === bookID).title}
                         </div>
                         <div className='book-authors'>
-                          {books.find((item) => item.id === bookID).authors}
+                          {
+                          books.find((item) => item.id === bookID).authors ?
+                          books.find((item) => item.id === bookID).authors:
+                          null
+                          }
                         </div>
                       </div>
                     </li>

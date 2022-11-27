@@ -1,12 +1,11 @@
-function BookShelfChanger({ bookID, bookShelf, onBookStateChange }) {
-  
+function BookShelfChanger({ bookID, completeBook, bookShelf, onBookStateChange }) {
   return (
     <div className='book-shelf-changer'>
       {/* onBookStateChange  receives two parameters:
         -book from the JSON data
         -shelf string) */}
       
-      <select defaultValue={bookShelf} onChange={(e) => onBookStateChange (bookID, e.target.value)}>
+      <select defaultValue={bookShelf} onChange={(e) => onBookStateChange (bookID, e.target.value, completeBook)}>
         <option value='none' disabled>
           Move to...
         </option>

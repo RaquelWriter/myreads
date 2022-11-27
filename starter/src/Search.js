@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import BookShelfChanger from './BookShelfChanger';
 import { Link } from 'react-router-dom';
-function Search({ booksToShow, searchBook, booksInShelfs, onBookStateChange }) {
+function Search({ booksToShow, searchBook, onBookStateChange }) {
   // SEARCH
 
   const [query, setQuery] = useState('');
@@ -79,8 +79,6 @@ const showingContacts =
       ?  getShelf() 
       : console.log('NO ENCONTRADO');
   }; */
-
-
   
   return (
     <div className='search-books'>
@@ -119,11 +117,12 @@ const showingContacts =
                     }}
                   ></div>
                   <div>
-                    {console.log('HEYEYEY:: ', item.id, ' / ', item.shelf)}
+                    {console.log('HEY:: ', item, ' / ', item.id, ' / ', item.shelf)}
                     {/* .find ((bookItem) => bookItem.id === item.id */}
                   </div>
                   <BookShelfChanger
                     bookID={item.id}
+                    completeBook={item}
                     bookShelf={item.shelf}
                     onBookStateChange={onBookStateChange}
                   />
