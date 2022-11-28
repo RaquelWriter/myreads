@@ -8,7 +8,6 @@ import Search from './Search';
 function App() {
   const [books, setBooks] = useState([]);
   const [booksInShelfs, setBooksInShelfs] = useState([]);
-  const [booksToShow, setBooksToShow] = useState([]);
 
   useEffect(() => {
     const getBooks = async () => {
@@ -63,50 +62,6 @@ function App() {
     }
   };
 
-  const searchBook = async (query, maxResults) => {
-    const res = await BooksAPI.search(query, maxResults);
-    if (query === '') {
-      setBooksToShow([]);
-    } else if (res.error === 'empty query') {
-      console.log('EMPTY QUERY!!: ', res);
-      setBooksToShow([]);
-    } else {
-      console.log('BOOKSTOSHOW: ', booksToShow);
-      giveShelfsToSearch(res);
-    }
-  };
-
-  const giveShelfsToSearch = (res) => {
-    for (let bookFromSearch of res) {
-      console.log('bookFromSearch', bookFromSearch);
-      findIDInBooksInShelfs(bookFromSearch, res)
-    };
-
-    console.log('RESULTADOAQUI: ', res)
-    setBooksToShow(res);
-  };
-    
-  // shelf: STRING currentlyReading, wantToRead, read
-  // ids: ARRAY of books inside shelfs
-  // id: STRING of unique ID of the book
-  // bookFromSearch_ID: ID of the book to find
-
-  const findIDInBooksInShelfs = (bookFromSearch, res) => {
-    console.log('booksInShelfs: ', booksInShelfs);
-    Object.entries(booksInShelfs).map(([shelf, ids]) => (
-      ids.map (id => {
-      console.log('id y bookFromSearch.id, KEY', id , ' / ', bookFromSearch.id, ' / ', shelf)
-        if ((id !== bookFromSearch.id) && !(bookFromSearch.hasOwnProperty(shelf))) {
-          console.log("NO IGUALES!", shelf)
-          bookFromSearch.shelf = 'none';
-        } else {
-          console.log("IGUALES!", shelf)
-          setBooksToShow([...res], bookFromSearch.shelf = shelf);
-        }
-        })))
-
-  }
-
   return (
     <Routes>
       <Route
@@ -125,9 +80,6 @@ function App() {
         element={
           <Search
             books={books}
-            setBooksToShow={setBooksToShow}
-            booksToShow={booksToShow}
-            searchBook={searchBook}
             booksInShelfs={booksInShelfs}
             onBookStateChange={onBookStateChange}
           />
