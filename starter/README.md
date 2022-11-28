@@ -15,8 +15,8 @@ How to start:
 ### App 
 
 #### States: books, booksInShelfs
-- books: Array of objects. Stores the value get by getAll()
-- booksInShelfs: 
+- books: Stores the value get by getAll() from BooksAPI
+- booksInShelfs: Stores the value of get() from BooksAPI
 
 #### Functions:
 - getBooks: calls to the getAll() in BookAPI
@@ -32,12 +32,19 @@ How to start:
 ### Search
 #### States: query, booksToShow
 #### Functions:
+- searchBook: calls async the search function in the BooksAPI. The result is pass to: giveShelfsToSearch function.
+- giveShelfsToSearch and findIDInBooksInShelfs: These functions will find the right shelves for the Books shown in the Search page.
+- findIDInBooksInShelfs: In this function is updated the state of booksToShow with the shelves.
 
 ### BooksShelfChanger
+- Inherit variables: bookID, completeBook, bookShelf
+- Inherit functions: onBookStateChange
+- The button for selecting the shelves.
 
 ### useDebounce (custom hook from Harash)
+- This debounce is called from the Search component for avoiding the use of an unmounted component, while using the search form.
 
-## What You're Getting
+## Architecture
 
 ```bash
 ├── CONTRIBUTING.md
