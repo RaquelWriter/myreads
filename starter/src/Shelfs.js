@@ -4,14 +4,12 @@ import BookShelfChanger from './BookShelfChanger';
 const shelfsTitles = ['Currently Reading', 'Want To Read', 'Read'];
 
 function Shelfs({ books, booksInShelfs, onBookStateChange }) {
-
   return (
     <>
       <div className='list-books-content'>
         <div>
           {Object.keys(booksInShelfs).map((item, key) => (
             <div className='bookshelf' key={key}>
-              {console.log("ITEM: !!!", item)}
               <h2 className='bookshelf-title'>{shelfsTitles[key]}</h2>
               <div className='bookshelf-books'>
                 <ol className='books-grid'>
@@ -26,12 +24,15 @@ function Shelfs({ books, booksInShelfs, onBookStateChange }) {
                               height: 193,
                               backgroundImage: `url(${
                                 books.find((item) => item.id === bookID)
-                                  .imageLinks?.smallThumbnail ? books.find((item) => item.id === bookID).imageLinks.smallThumbnail : null
+                                  .imageLinks?.smallThumbnail
+                                  ? books.find((item) => item.id === bookID)
+                                      .imageLinks.smallThumbnail
+                                  : null
                               })`,
                             }}
                           ></div>
                           <BookShelfChanger
-                            bookID={bookID} 
+                            bookID={bookID}
                             bookShelf={item}
                             onBookStateChange={onBookStateChange}
                           />
@@ -40,9 +41,7 @@ function Shelfs({ books, booksInShelfs, onBookStateChange }) {
                           {books.find((item) => item.id === bookID).title}
                         </div>
                         <div className='book-authors'>
-                          {
-                          books.find((item) => item.id === bookID).authors
-                          }
+                          {books.find((item) => item.id === bookID).authors}
                         </div>
                       </div>
                     </li>

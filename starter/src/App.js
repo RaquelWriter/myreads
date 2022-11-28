@@ -13,7 +13,6 @@ function App() {
     const getBooks = async () => {
       const res = await BooksAPI.getAll();
       setBooks(res);
-      console.log('RESPONSE: ', res);
     };
     getBooks();
   }, []);
@@ -42,19 +41,10 @@ function App() {
   // UPDATE THE SHELF WITH USER SELECTION
   // Called from BookShelfChanger.js
   const onBookStateChange = async (bookID, bookShelf, completeBook) => {
-    console.log(
-      'bookID inside UPDATE: ',
-      bookID,
-      'bookShelf inside UPDATE: ',
-      bookShelf,
-      'completebook inside UPDATE: ',
-      completeBook
-    );
     const myBook = books.find((item) => item.id === bookID);
     if (myBook) {
       const res = await BooksAPI.update(myBook, bookShelf);
       setBooksInShelfs(res);
-      console.log(res);
     } else {
       completeBook.shelf = bookShelf;
       setBooks([...books, completeBook]);
