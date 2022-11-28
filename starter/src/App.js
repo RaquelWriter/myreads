@@ -70,6 +70,7 @@ function App() {
         element={
           <Search
             books={books}
+            setBooks={setBooks}
             booksInShelfs={booksInShelfs}
             onBookStateChange={onBookStateChange}
           />

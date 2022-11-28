@@ -4,6 +4,8 @@ import BookShelfChanger from './BookShelfChanger';
 const shelfsTitles = ['Currently Reading', 'Want To Read', 'Read'];
 
 function Shelfs({ books, booksInShelfs, onBookStateChange }) {
+
+  console.log('BOOKS: ', books);
   return (
     <>
       <div className='list-books-content'>

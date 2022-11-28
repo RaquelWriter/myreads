@@ -4,7 +4,7 @@ import BookShelfChanger from './BookShelfChanger';
 import useDebounce from './useDebounce';
 import { Link } from 'react-router-dom';
 
-function Search({ onBookStateChange, booksInShelfs }) {
+function Search({ books, setBooks, onBookStateChange, booksInShelfs }) {
   const [query, setQuery] = useState('');
   const debouncedVal = useDebounce(query, 500);
   const [booksToShow, setBooksToShow] = useState([]);
@@ -33,29 +33,27 @@ function Search({ onBookStateChange, booksInShelfs }) {
   };
 
   const giveShelfsToSearch = (res) => {
-    for (let bookFromSearch of res) {
-      findIDInBooksInShelfs(bookFromSearch, res);
-    }
+    // Initialize with shelf = 'none'
+    Object.keys(res).map((key) => (res[key].shelf = 'none'));
+    console.log('ALL THE BOOKS: ', res);
+    // Assign the right shelf to books of the search page
+    const assignShelfs = () => {
+      for (let book of books) {
+        for (let bookRes of res) {
+          console.log('book of books', book, books)
+          console.log('bookRes of res', bookRes, res)
+          console.log('book.id === bookRes.id', book.id, bookRes.id);
+          if (book.id === bookRes.id) {
+            console.log('IGUAL');
+            bookRes.shelf = book.shelf
+          } 
+        }
+      }
+    };
+    assignShelfs();
+    // Update the state variable booksToShow with the books with right shelves
     setBooksToShow(res);
   };
-
-  // shelf: STRING currentlyReading, wantToRead, read
-  // ids: ARRAY of books inside shelfs
-  // id: STRING of unique ID of the book
-  // bookFromSearch_ID: ID of the book to find
-
-  const findIDInBooksInShelfs = (bookFromSearch, res) => {
-    Object.entries(booksInShelfs).map(([shelf, ids]) =>
-      ids.map((id) => {
-        if (id !== bookFromSearch.id && !bookFromSearch.hasOwnProperty(shelf)) {
-          bookFromSearch.shelf = 'none';
-        } else {
-          setBooksToShow([...res], (bookFromSearch.shelf = shelf));
-        }
-      })
-    );
-  };
-
   return (
     <div className='search-books'>
       <div className='search-books-bar'>
