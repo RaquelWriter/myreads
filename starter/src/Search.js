@@ -35,16 +35,11 @@ function Search({ books, setBooks, onBookStateChange, booksInShelfs }) {
   const giveShelfsToSearch = (res) => {
     // Initialize with shelf = 'none'
     Object.keys(res).map((key) => (res[key].shelf = 'none'));
-    console.log('ALL THE BOOKS: ', res);
     // Assign the right shelf to books of the search page
     const assignShelfs = () => {
       for (let book of books) {
         for (let bookRes of res) {
-          console.log('book of books', book, books)
-          console.log('bookRes of res', bookRes, res)
-          console.log('book.id === bookRes.id', book.id, bookRes.id);
           if (book.id === bookRes.id) {
-            console.log('IGUAL');
             bookRes.shelf = book.shelf
           } 
         }
