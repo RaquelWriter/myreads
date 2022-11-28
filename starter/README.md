@@ -2,7 +2,7 @@
 
 Web app for searching, filtering and updating books in shelfs using REACT and WEBPACK.
 
-## TL;DR
+## STARTING
 
 How to start:
 
