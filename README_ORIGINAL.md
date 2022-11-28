@@ -1,50 +1,17 @@
-# My Reads project - Raquel Sánchez Ventero
+# MyReads Project
 
-Web app for searching, filtering and updating books in shelfs using REACT and WEBPACK.
+This is the starter template for the final assessment project for Udacity's React Fundamentals course. The goal of this template is to save you time by providing a static example of the CSS and HTML markup that may be used, but without any of the React code that is needed to complete the project. If you choose to start with this template, your job will be to add interactivity to the app by refactoring the static code in this template.
 
-## STARTING
+Of course, you are free to start this project from scratch if you wish! Just be sure to use [Create React App](https://reactjs.org/docs/create-a-new-react-app.html) to bootstrap the project.
 
-How to start:
+## TL;DR
 
-- download the repository.
+To get started developing right away:
+
 - install all project dependencies with `npm install`
 - start the development server with `npm start`
 
-## COMPONENTS
-
-### App 
-
-#### States: books, booksInShelfs
-- books: Stores the value get by getAll() from BooksAPI
-- booksInShelfs: Stores the value of get() from BooksAPI
-
-#### Functions:
-- getBooks: calls to the getAll() in BookAPI
-- initBooksState: initizalize the first state of the books in the shelves.
-- onBookStateChange: called from BookShelfChanger, manages the changes of shelves from the button.
-- Route: It has two routes: Shelfs / and Search /search
-
-### Shelfs
-#### States: inherit books, booksInShelfs from App
-#### Functions:
-- Inherit onBookStateChange from App
-
-### Search
-#### States: query, booksToShow
-#### Functions:
-- searchBook: calls async the search function in the BooksAPI. The result is pass to: giveShelfsToSearch function.
-- giveShelfsToSearch and findIDInBooksInShelfs: These functions will find the right shelves for the Books shown in the Search page.
-- findIDInBooksInShelfs: In this function is updated the state of booksToShow with the shelves.
-
-### BooksShelfChanger
-- Inherit variables: bookID, completeBook, bookShelf
-- Inherit functions: onBookStateChange
-- The button for selecting the shelves.
-
-### useDebounce (custom hook from Harash)
-- This debounce is called from the Search component for avoiding the use of an unmounted component, while using the search form.
-
-## Architecture
+## What You're Getting
 
 ```bash
 ├── CONTRIBUTING.md
@@ -59,10 +26,6 @@ How to start:
     ├── App.js # This is the root of your app. Contains static HTML right now.
     ├── App.test.js # Used for testing. Provided with Create React App. Testing is encouraged, but not required.
     ├── BooksAPI.js # A JavaScript API for the provided Udacity backend. Instructions for the methods are below.
-    ├── Shelfs.js # COMPONENT for the main page, which shows the books that actually the user has in the shelfs.
-    ├── Search.js # COMPONENT for the searching page.
-    ├── BookShelfChanger.js # COMPONENT which is used for the shelves changer button.
-    ├── useDebounce.js # CUSTOM HOOK, made by Mr. Harsh. I changed it a little bit.
     ├── icons # Helpful images for your app. Use at your discretion.
     │   ├── add.svg
     │   ├── arrow-back.svg
