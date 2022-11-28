@@ -6,7 +6,7 @@ function BookShelfChanger({ bookID, completeBook, bookShelf, onBookStateChange }
         -shelf string) */}
       
       <select defaultValue={bookShelf} onChange={(e) => onBookStateChange (bookID, e.target.value, completeBook)}>
-        <option value='none' disabled>
+        <option value='moveTo' disabled>
           Move to...
         </option>
         <option value='currentlyReading'>Currently Reading</option>
