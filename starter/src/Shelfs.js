@@ -1,6 +1,8 @@
 import { Link } from 'react-router-dom';
 import BookShelfChanger from './BookShelfChanger';
 
+const shelfsTitles = ['Currently Reading', 'Want To Read', 'Read'];
+
 function Shelfs({ books, booksInShelfs, onBookStateChange }) {
 
   return (
@@ -10,7 +12,7 @@ function Shelfs({ books, booksInShelfs, onBookStateChange }) {
           {Object.keys(booksInShelfs).map((item, key) => (
             <div className='bookshelf' key={key}>
               {console.log("ITEM: !!!", item)}
-              <h2 className='bookshelf-title'>{item}</h2>
+              <h2 className='bookshelf-title'>{shelfsTitles[key]}</h2>
               <div className='bookshelf-books'>
                 <ol className='books-grid'>
                   {booksInShelfs[item].map((bookID) => (
@@ -39,9 +41,7 @@ function Shelfs({ books, booksInShelfs, onBookStateChange }) {
                         </div>
                         <div className='book-authors'>
                           {
-                          books.find((item) => item.id === bookID).authors ?
-                          books.find((item) => item.id === bookID).authors:
-                          null
+                          books.find((item) => item.id === bookID).authors
                           }
                         </div>
                       </div>

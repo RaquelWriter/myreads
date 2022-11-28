@@ -7,6 +7,8 @@ import Search from './Search';
 
 function App() {
   const [books, setBooks] = useState([]);
+  const [booksInShelfs, setBooksInShelfs] = useState([]);
+  const [booksToShow, setBooksToShow] = useState([]);
 
   useEffect(() => {
     const getBooks = async () => {
@@ -18,9 +20,6 @@ function App() {
   }, []);
 
   // UPDATE THE SHELFS WITH INITIAL STATE
-
-  const [booksInShelfs, setBooksInShelfs] = useState([]);
-
   useEffect(() => {
     const initBooksState = () => {
       const currentlyReading = books
@@ -42,6 +41,7 @@ function App() {
   }, [books]);
 
   // UPDATE THE SHELF WITH USER SELECTION
+  // Called from BookShelfChanger.js
   const onBookStateChange = async (bookID, bookShelf, completeBook) => {
     console.log(
       'bookID inside UPDATE: ',
@@ -63,8 +63,6 @@ function App() {
     }
   };
 
-  const [booksToShow, setBooksToShow] = useState([]);
-
   const searchBook = async (query, maxResults) => {
     const res = await BooksAPI.search(query, maxResults);
     if (query === '') {
@@ -74,86 +72,40 @@ function App() {
       setBooksToShow([]);
     } else {
       console.log('BOOKSTOSHOW: ', booksToShow);
-      prepareBooksToShow(res);
+      giveShelfsToSearch(res);
     }
   };
 
-  const prepareBooksToShow = (res) => {
-    /*     Object.values(booksInShelfs)
-      .map((bookFromShelf) => bookFromShelf.id)
-      .find((id) => id === Object.values(res).map((resBook) => resBook.id))
-      ? getShelf(res)
-      : setBooksToShow({ ...res, shelf: 'none' }); */
-    /*     Object.keys(booksInShelfs).map(
-      (bookFromShelf) =>
-        bookFromShelf.id ===
-        Object.values(res).map((resBook) =>
-          resBook.id ? getShelf(res) : setBooksToShow({ ...res, shelf: 'none' })
-        )
-    ); */
+  const giveShelfsToSearch = (res) => {
+    for (let bookFromSearch of res) {
+      console.log('bookFromSearch', bookFromSearch);
+      findIDInBooksInShelfs(bookFromSearch, res)
+    };
 
-    Object.keys(res).map(
-      (bookFromSearch) =>
-        bookFromSearch.id ===
-        Object.values(booksInShelfs).map((bookFromShelf) =>
-          bookFromShelf.id
-            ? getShelf(res)
-            : (res[bookFromSearch].shelf = 'none')
-        )
-    );
+    console.log('RESULTADOAQUI: ', res)
     setBooksToShow(res);
   };
+    
+  // shelf: STRING currentlyReading, wantToRead, read
+  // ids: ARRAY of books inside shelfs
+  // id: STRING of unique ID of the book
+  // bookFromSearch_ID: ID of the book to find
 
-  /* 
-  shelfBooks.map((shelfBook) =>
-    shelfBook.id === book.id ? { ...shelfBook, shelf: newShelf } : shelfBook
-  );
- */
-  const getShelf = (res) => {
-    let shelf = Object.values(booksInShelfs)
-      .map((item) => item.shelf)
-      .find((shelf) => shelf);
-    setBooksToShow({ ...res, shelf: shelf });
-  };
+  const findIDInBooksInShelfs = (bookFromSearch, res) => {
+    console.log('booksInShelfs: ', booksInShelfs);
+    Object.entries(booksInShelfs).map(([shelf, ids]) => (
+      ids.map (id => {
+      console.log('id y bookFromSearch.id, KEY', id , ' / ', bookFromSearch.id, ' / ', shelf)
+        if ((id !== bookFromSearch.id) && !(bookFromSearch.hasOwnProperty(shelf))) {
+          console.log("NO IGUALES!", shelf)
+          bookFromSearch.shelf = 'none';
+        } else {
+          console.log("IGUALES!", shelf)
+          setBooksToShow([...res], bookFromSearch.shelf = shelf);
+        }
+        })))
 
-  // FIND THE SHELF IN booksInShelf
-  // Return the shelf
-  // If found include it, if not set to None shelf
-
-  // SHELF DISTRIBUTION FOR THE BOOKS IN SEARCH
-  /*   const [shelfForBookOnSearch, setShelfForBookOnSearch] = useState('');
-
-    const findShelf = (bookIDFromSearch) => {
-      Object.values(booksInShelfs)
-        .map((bookFromShelf) => bookFromShelf.id)
-        .find((id) => id === bookIDFromSearch) &&
-        getShelf()
-    };
-    const getShelf = () => {
-      let shelf = Object.values(booksInShelfs)
-        .map((item) => item.shelf)
-        .find((shelf) => shelf);
-      setShelfForBookOnSearch(shelf);
-    };
-
-
-  /* const searchBook = async (query, maxResults) => {
-    if (query !== '') {
-      const res = await BooksAPI.search(query, maxResults);
-      if (res.error === 'empty query') {
-        console.log('EMPTY QUERY!!: ', res);
-        setBooksToShow([]);
-      } else {
-        setBooksToShow(res);
-      }
-    } else {
-      setBooksToShow([]);
-    }    
-  }; */
-
-  /*   contacts.filter((c) =>
-  c.name.toLowerCase().includes(query.toLowerCase())
-); */
+  }
 
   return (
     <Routes>
@@ -173,6 +125,7 @@ function App() {
         element={
           <Search
             books={books}
+            setBooksToShow={setBooksToShow}
             booksToShow={booksToShow}
             searchBook={searchBook}
             booksInShelfs={booksInShelfs}

@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react';
 import BookShelfChanger from './BookShelfChanger';
+import useDebounce from './useDebounce';
 import { Link } from 'react-router-dom';
-function Search({ booksToShow, searchBook, onBookStateChange }) {
+function Search({ setBooksToShow, booksToShow, searchBook, onBookStateChange }) {
   // SEARCH
 
   const [query, setQuery] = useState('');
+  const debouncedVal = useDebounce(query, 500);
 
   const updateQuery = (e) => {
     e.preventDefault();
@@ -13,72 +15,12 @@ function Search({ booksToShow, searchBook, onBookStateChange }) {
   };
 
   useEffect(() => {
-    const updateSearchPage = setTimeout(() => {
-      if (query) {
-        searchBook(query, 10);
-        console.log('QUERY!!!: ', query);
-      } else {
-        searchBook('zzzzzz', 0);
-      }
-    }, 500);
-    return () => clearTimeout(updateSearchPage);
-  }, [query]);
-
-  /*   useEffect(() => {
-    let unmounted = false;
-    if ((!unmounted) && query !== '') {
-      searchBook(query, 10);
-      console.log('QUERY!!!: ', query)
+    if (!debouncedVal) {
+      setBooksToShow([]);
     } else {
-      searchBook('zzzzzz', 0);
+      searchBook(query, 20);
     }
-
-    return () => {
-      unmounted = true;
-    };
-  }, [query]); */
-
-  /* const showSearchBooks = () =>{
-  query === ''
-  ? console.log('NO MUESTRO NINGUN LIBRO')
-  : searchBook(query, 10);
-} */
-
-  /* const [query, setQuery] = useState('');
-
-const updateQuery = (query) => {
-  setQuery(query.trim());
-  console.log(query);
-};
-
-const clearQuery = () => {
-  updateQuery("");
-};
-
-const showingContacts =
-  query === ''
-    ? contacts
-    : contacts.filter((c) =>
-        c.name.toLowerCase().includes(query.toLowerCase())
-      );
-*/
-
-  /* {
-  showingContacts.length !== contacts.length && (
-    <div className="showing-contacts">
-      <span>Now showing {showingContacts.length} of {contacts.length}</span>
-      <button onClick={() => clearQuery()}>Show all</button>
-    </div>
-  )
-} */
-
-  /*   const findShelf = (bookIDFromSearch) => {
-    Object.values(booksInShelfs)
-      .map((bookFromShelf) => bookFromShelf.id)
-      .find((id) => id === bookIDFromSearch)
-      ?  getShelf() 
-      : console.log('NO ENCONTRADO');
-  }; */
+  }, [debouncedVal]);
   
   return (
     <div className='search-books'>
